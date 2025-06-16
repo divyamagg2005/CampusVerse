@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { supabaseBrowser } from "@/utils/supabaseBrowser";
 
-export default function PostCreator() {
+interface PostCreatorProps {
+  onSuccess?: () => void;
+}
+
+export default function PostCreator({ onSuccess }: PostCreatorProps) {
   const { session } = useSessionContext();
   const supabase = supabaseBrowser();
   const router = useRouter();
@@ -98,6 +102,7 @@ export default function PostCreator() {
       }
 
       // Reset form on success
+      onSuccess?.();
       setContent("");
       setImageFile(null);
 

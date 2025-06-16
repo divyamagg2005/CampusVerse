@@ -103,15 +103,21 @@ function AuthPage() {
         )}
 
         {isSignUp && (
-          <input
-            type="text"
-            placeholder="College"
-            className="rounded-lg border border-transparent bg-white/80 dark:bg-gray-900/60 px-4 py-2 shadow-lg focus:outline-none focus:ring-4 focus:ring-accent/50 backdrop-blur-md placeholder:text-gray-400 transition"
-            value={college}
-            onChange={(e) => setCollege(e.target.value)}
-            required
-          />
-        )}
+           <select
+             value={college}
+             onChange={(e) => setCollege(e.target.value)}
+             className="rounded-lg border border-transparent bg-white/80 dark:bg-gray-900/60 px-4 py-2 shadow-lg focus:outline-none focus:ring-4 focus:ring-accent/50 backdrop-blur-md placeholder:text-gray-400 transition"
+             required
+           >
+             <option value="" disabled>Select your college</option>
+             <option value="Stanford University">Stanford University</option>
+             <option value="MIT">MIT</option>
+             <option value="Harvard University">Harvard University</option>
+             <option value="IIT Bombay">IIT Bombay</option>
+             <option value="Delhi University">Delhi University</option>
+             <option value="Other">Other</option>
+           </select>
+         )}
 
         <input
           type="password"
