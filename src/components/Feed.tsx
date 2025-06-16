@@ -176,13 +176,13 @@ export default function Feed() {
   if (!posts.length) return <p className="text-center text-sm">No posts yet.</p>;
 
   return (
-    <ul className="flex flex-col gap-6 w-full max-w-2xl mx-auto">
+    <ul className="flex flex-col gap-8 w-full max-w-2xl mx-auto animate-fadeIn">
       {posts.map((post) => (
         <li
           key={post.id}
-          className="border rounded-lg p-4 bg-white dark:bg-gray-800 shadow-sm"
+          className="rounded-xl p-5 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md border border-primary shadow-lg hover:shadow-2xl hover:-translate-y-1 transform transition-shadow transition-transform animate-slideUp"
         >
-          <div className="flex justify-between items-center mb-2 text-sm text-gray-500">
+          <div className="flex justify-between items-center mb-2 text-sm text-foreground">
             <span className="font-medium">
               {post.profiles?.email || 'Unknown User'}
             </span>
@@ -193,7 +193,7 @@ export default function Feed() {
               }).format(new Date(post.created_at))}
             </span>
           </div>
-          <p className="whitespace-pre-line mb-3 text-gray-800 dark:text-gray-200">{post.content}</p>
+          <p className="whitespace-pre-line mb-3 text-foreground">{post.content}</p>
           {post.image_url && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -204,14 +204,14 @@ export default function Feed() {
           )}
           
           {/* Like and Comment Actions */}
-          <div className="mt-3 flex items-center gap-6 pt-3 border-t border-gray-100 dark:border-gray-700">
+          <div className="mt-4 flex items-center gap-6 pt-4 border-t border-primary">
             <LikeButton 
               postId={post.id} 
               initialLikesCount={post.likes_count || 0} 
               initialLiked={post.liked_by_me || false} 
             />
             <button 
-              className={`flex items-center gap-1 ${openCommentsPostId === post.id ? 'text-blue-600' : 'text-gray-500'} hover:text-gray-700 dark:hover:text-gray-300`}
+              className={`flex items-center gap-1 transition-colors ${openCommentsPostId === post.id ? 'text-primary' : 'text-gray-500'} hover:text-primary`}
               onClick={(e) => {
                 e.preventDefault();
                 setOpenCommentsPostId(prev => prev === post.id ? null : post.id);

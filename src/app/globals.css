@@ -1,8 +1,17 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 :root {
+  /* Brand Palette */
+  --base: #293462;       /* deep navy */
+  --primary: #22577A;    /* dark teal */
+  --secondary: #38A3A5;  /* aqua */
+  --accent: #80ED99;     /* light mint */
+  --success: #57CC99;    /* green */
+
+  /* Semantic tokens */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: var(--base);
 }
 
 @theme inline {
@@ -16,11 +25,20 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --base: #ededed;
   }
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(135deg, var(--base) 0%, var(--primary) 25%, var(--secondary) 50%, var(--accent) 75%, var(--success) 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
 }
+
+/* Animated rainbow overlay for crazy auth page */
+.gradient-overlay {
+  background: linear-gradient(120deg, var(--base), var(--primary), var(--secondary), var(--accent), var(--success));
+  background-size: 400% 400%;
+}
+

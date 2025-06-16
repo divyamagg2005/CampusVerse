@@ -116,10 +116,10 @@ export default function PostCreator() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-xl bg-white dark:bg-black/20 border rounded-lg p-4 shadow-sm flex flex-col gap-4"
+      className="w-full max-w-xl p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl border border-primary shadow-2xl flex flex-col gap-4 animate-slideDown"
     >
       <textarea
-        className="w-full border rounded p-2 resize-y min-h-[120px] focus:outline-none focus:ring-2 focus:ring-foreground/50"
+        className="w-full rounded-lg border border-transparent bg-white/80 dark:bg-gray-900/60 p-3 resize-y min-h-[120px] shadow-lg focus:outline-none focus:ring-4 focus:ring-accent/50 backdrop-blur-md placeholder:text-gray-400 transition"
         placeholder="What's on your mind?"
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -134,7 +134,7 @@ export default function PostCreator() {
             onChange={handleImageChange}
             className="hidden"
           />
-          <span className="inline-block px-4 py-2 border rounded w-full">
+          <span className="inline-block px-4 py-2 bg-white/60 dark:bg-gray-800/60 border border-dashed border-foreground/40 rounded-lg shadow-inner backdrop-blur-md hover:brightness-105 transition w-full">
             {imageFile ? imageFile.name : "Upload Image"}
           </span>
         </label>
@@ -147,7 +147,7 @@ export default function PostCreator() {
       <button
         type="submit"
         disabled={loading || !content.trim()}
-        className="self-end bg-foreground text-background px-4 py-2 rounded disabled:opacity-50"
+        className="self-end relative bg-gradient-to-r from-accent via-secondary to-success text-background px-6 py-2 rounded-lg shadow-xl hover:brightness-110 active:scale-95 disabled:opacity-50 transition-transform"
       >
         {loading ? "Posting..." : "Post"}
       </button>

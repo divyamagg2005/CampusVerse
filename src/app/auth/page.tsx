@@ -61,7 +61,7 @@ function AuthPage() {
 
   if (!mounted) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4 gap-6">
+      <div className="relative overflow-hidden flex flex-col items-center justify-center min-h-screen p-4 gap-6">
         <div className="w-full max-w-sm space-y-4">
           <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
           <div className="h-12 bg-gray-200 rounded animate-pulse"></div>
@@ -73,8 +73,10 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 gap-6">
-      <h1 className="text-2xl font-bold">
+    <div className="relative overflow-hidden flex flex-col items-center justify-center min-h-screen p-4 gap-6">
+      <div className="absolute inset-0 gradient-overlay animate-gradientMove" aria-hidden="true"></div>
+      <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-sm p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl shadow-2xl">
+        <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-accent via-secondary to-success animate-textShine">
         {isSignUp ? "Sign Up" : "Sign In"}
       </h1>
       <form
@@ -84,7 +86,7 @@ function AuthPage() {
         <input
           type="email"
           placeholder="Email"
-          className="border p-2 rounded"
+          className="rounded-lg border border-transparent bg-white/80 dark:bg-gray-900/60 px-4 py-2 shadow-lg focus:outline-none focus:ring-4 focus:ring-accent/50 backdrop-blur-md placeholder:text-gray-400 transition"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -93,7 +95,7 @@ function AuthPage() {
           <input
             type="text"
             placeholder="Full name"
-            className="border p-2 rounded"
+            className="rounded-lg border border-transparent bg-white/80 dark:bg-gray-900/60 px-4 py-2 shadow-lg focus:outline-none focus:ring-4 focus:ring-accent/50 backdrop-blur-md placeholder:text-gray-400 transition"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
@@ -104,7 +106,7 @@ function AuthPage() {
           <input
             type="text"
             placeholder="College"
-            className="border p-2 rounded"
+            className="rounded-lg border border-transparent bg-white/80 dark:bg-gray-900/60 px-4 py-2 shadow-lg focus:outline-none focus:ring-4 focus:ring-accent/50 backdrop-blur-md placeholder:text-gray-400 transition"
             value={college}
             onChange={(e) => setCollege(e.target.value)}
             required
@@ -114,7 +116,7 @@ function AuthPage() {
         <input
           type="password"
           placeholder="Password"
-          className="border p-2 rounded"
+          className="rounded-lg border border-transparent bg-white/80 dark:bg-gray-900/60 px-4 py-2 shadow-lg focus:outline-none focus:ring-4 focus:ring-accent/50 backdrop-blur-md placeholder:text-gray-400 transition"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -122,20 +124,21 @@ function AuthPage() {
         {error && <p className="text-red-600 text-sm">{error}</p>}
         <button
           type="submit"
-          className="bg-foreground text-background py-2 rounded disabled:opacity-50"
+          className="relative bg-gradient-to-r from-accent via-secondary to-success text-background py-2 rounded-lg shadow-xl hover:brightness-110 focus:outline-none focus:ring-4 focus:ring-primary/50 active:scale-95 disabled:opacity-50 transition-transform"
           disabled={loading}
         >
           {loading ? "Loading..." : isSignUp ? "Create account" : "Sign In"}
         </button>
       </form>
       <button
-        className="text-sm underline"
+        className="text-sm underline text-primary hover:text-accent transition-colors"
         onClick={() => setIsSignUp(!isSignUp)}
       >
         {isSignUp
           ? "Already have an account? Sign in"
           : "Don't have an account? Sign up"}
       </button>
+      </div>
     </div>
   );
 }

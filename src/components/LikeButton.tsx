@@ -104,7 +104,7 @@ export default function LikeButton({
     <button
       onClick={toggleLike}
       disabled={loading}
-      className={`flex items-center gap-1 ${isLiked ? 'text-red-500' : 'text-gray-500'} hover:text-red-500 transition-colors`}
+      className={`flex items-center gap-1 ${isLiked ? 'text-success' : 'text-gray-500'} hover:text-success transition-colors hover:animate-pulse` }
       aria-label={isLiked ? 'Unlike' : 'Like'}
     >
       <svg
