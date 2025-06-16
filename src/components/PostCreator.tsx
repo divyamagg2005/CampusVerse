@@ -12,7 +12,7 @@ export default function PostCreator() {
 
   const [content, setContent] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [anonymous, setAnonymous] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -89,7 +89,7 @@ export default function PostCreator() {
           content: content.trim(),
           image_url: imageUrl,
           college: profile.college,
-          anonymous,
+
         });
 
       if (insertErr) {
@@ -100,7 +100,7 @@ export default function PostCreator() {
       // Reset form on success
       setContent("");
       setImageFile(null);
-      setAnonymous(false);
+
       
       // Refresh the page to show new post
       window.location.reload();
@@ -139,15 +139,7 @@ export default function PostCreator() {
           </span>
         </label>
 
-        <label className="flex items-center gap-2 cursor-pointer text-sm">
-          <input
-            type="checkbox"
-            checked={anonymous}
-            onChange={(e) => setAnonymous(e.target.checked)}
-            className="h-4 w-4"
-          />
-          Post anonymously
-        </label>
+
       </div>
 
       {error && <p className="text-red-600 text-sm">{error}</p>}

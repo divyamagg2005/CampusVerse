@@ -30,6 +30,7 @@ export default function Feed() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [openCommentsPostId, setOpenCommentsPostId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!session) {
@@ -175,38 +176,74 @@ export default function Feed() {
   if (!posts.length) return <p className="text-center text-sm">No posts yet.</p>;
 
   return (
-    <ul className="flex flex-col gap-6 w-full max-w-xl">
+    <ul className="flex flex-col gap-6 w-full max-w-2xl mx-auto">
       {posts.map((post) => (
         <li
           key={post.id}
-          className="border rounded-lg p-4 bg-white dark:bg-black/20 shadow-sm"
+          className="border rounded-lg p-4 bg-white dark:bg-gray-800 shadow-sm"
         >
-          <div className="flex justify-between items-center mb-2 text-xs text-gray-500">
-            <span>{post.anonymous ? "Anonymous" : "By a fellow student"}</span>
-            <span>
+          <div className="flex justify-between items-center mb-2 text-sm text-gray-500">
+            <span className="font-medium">
+              {post.profiles?.email || 'Unknown User'}
+            </span>
+            <span className="text-xs">
               {new Intl.DateTimeFormat("default", {
                 dateStyle: "medium",
                 timeStyle: "short",
               }).format(new Date(post.created_at))}
             </span>
           </div>
-          <p className="whitespace-pre-line mb-3">{post.content}</p>
+          <p className="whitespace-pre-line mb-3 text-gray-800 dark:text-gray-200">{post.content}</p>
           {post.image_url && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={post.image_url}
               alt="Post image"
-              className="max-h-80 w-full object-contain rounded"
+              className="max-h-96 w-full object-contain rounded-lg border border-gray-200 dark:border-gray-700"
             />
           )}
-          <div className="flex justify-between items-center mt-2 text-sm">
-            <LikeButton
-              postId={post.id}
-              initialLiked={post.liked_by_me ?? false}
-              initialCount={post.likes_count ?? 0}
+          
+          {/* Like and Comment Actions */}
+          <div className="mt-3 flex items-center gap-6 pt-3 border-t border-gray-100 dark:border-gray-700">
+            <LikeButton 
+              postId={post.id} 
+              initialLikesCount={post.likes_count || 0} 
+              initialLiked={post.liked_by_me || false} 
             />
+            <button 
+              className={`flex items-center gap-1 ${openCommentsPostId === post.id ? 'text-blue-600' : 'text-gray-500'} hover:text-gray-700 dark:hover:text-gray-300`}
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenCommentsPostId(prev => prev === post.id ? null : post.id);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+              <span className="text-sm">Comment</span>
+            </button>
           </div>
-          <CommentSection postId={post.id} />
+          
+          {/* Comment Section (toggle) */}
+          {openCommentsPostId === post.id && (
+            <div className="mt-2">
+              <CommentSection 
+                postId={post.id} 
+                initialComments={[]} 
+              />
+            </div>
+          )}
         </li>
       ))}
     </ul>
