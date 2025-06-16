@@ -5,6 +5,9 @@ import { useSessionContext } from "@supabase/auth-helpers-react";
 import { supabaseBrowser } from "@/utils/supabaseBrowser";
 import { useRouter } from "next/navigation";
 
+import LikeButton from "@/components/LikeButton";
+import CommentSection from "@/components/CommentSection";
+
 interface Post {
   id: string;
   content: string;
@@ -15,6 +18,8 @@ interface Post {
   profiles?: {
     email: string;
   };
+  likes_count?: number;
+  liked_by_me?: boolean;
 }
 
 export default function Feed() {
@@ -100,15 +105,32 @@ export default function Feed() {
         // 6. Create a map of user IDs to emails
         const userMap = new Map(usersData.map(user => [user.id, user.email]));
         
-        // 7. Combine posts with user emails
-        const postsWithEmails = data.map(post => ({
-          ...post,
-          profiles: {
-            email: userMap.get(post.user_id) || 'unknown@example.com'
-          }
-        }));
+        // 7. Fetch likes info
+        const { data: likesData } = await supabase
+          .from('post_likes')
+          .select('post_id, user_id');
+
+        const likesMap = new Map<string, string[]>();
+        likesData?.forEach(like => {
+          const arr = likesMap.get(like.post_id) || [];
+          arr.push(like.user_id);
+          likesMap.set(like.post_id, arr);
+        });
+
+        // 8. Combine posts with user emails and likes
+        const postsWithEmails = data.map(post => {
+          const likeUsers = likesMap.get(post.id) || [];
+          return {
+            ...post,
+            likes_count: likeUsers.length,
+            liked_by_me: likeUsers.includes(session.user.id),
+            profiles: {
+              email: userMap.get(post.user_id) || 'unknown@example.com'
+            }
+          };
+        });
         
-        // 8. Update the posts state with the combined data
+        // 9. Update the posts state with the combined data
         setPosts(postsWithEmails as unknown as Post[]);
         
       } catch (err: any) {
@@ -177,6 +199,14 @@ export default function Feed() {
               className="max-h-80 w-full object-contain rounded"
             />
           )}
+          <div className="flex justify-between items-center mt-2 text-sm">
+            <LikeButton
+              postId={post.id}
+              initialLiked={post.liked_by_me ?? false}
+              initialCount={post.likes_count ?? 0}
+            />
+          </div>
+          <CommentSection postId={post.id} />
         </li>
       ))}
     </ul>
