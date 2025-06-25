@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
-import Header from "@/components/Header";
+import HeaderConditional from "@/components/HeaderConditional";
 
 export const metadata: Metadata = {
   title: "CampusVerse",
@@ -19,7 +19,7 @@ export default function RootLayout({
         className="antialiased"
       >
         <AuthProvider>
-            <Header />
+            <HeaderConditional />
             {children}
           </AuthProvider>
       </body>

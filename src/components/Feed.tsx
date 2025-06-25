@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import LikeButton from "@/components/LikeButton";
 import CommentSection from "@/components/CommentSection";
+import SkeletonPost from "@/components/SkeletonPost";
 
 interface Post {
   id: string;
@@ -171,7 +172,15 @@ export default function Feed() {
     return <p className="text-center text-sm text-gray-600">Sign in to view the feed.</p>;
   }
 
-  if (loading) return <p className="text-center">Loading feed...</p>;
+  if (loading) {
+    return (
+      <ul className="flex flex-col gap-8 w-full max-w-2xl mx-auto">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <SkeletonPost key={i} />
+        ))}
+      </ul>
+    );
+  }
   if (error) return <p className="text-center text-red-600 text-sm">{error}</p>;
   if (!posts.length) return <p className="text-center text-sm">No posts yet.</p>;
 
@@ -180,12 +189,17 @@ export default function Feed() {
       {posts.map((post) => (
         <li
           key={post.id}
-          className="rounded-xl p-5 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md border border-primary shadow-lg hover:shadow-2xl hover:-translate-y-1 transform transition-shadow transition-transform animate-slideUp"
+          className="group rounded-3xl p-6 glass-dark shadow-xl white/60 dark:bg-gray-800/60 backdrop-blur-md shadow-xl hover:shadow-2xl hover:-translate-y-1 transform transition-all animate-slideUp overflow-hidden"
         >
-          <div className="flex justify-between items-center mb-2 text-sm text-foreground">
-            <span className="font-medium">
-              {post.profiles?.email || 'Unknown User'}
-            </span>
+          <div className="flex justify-between items-center mb-4 text-sm text-foreground">
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-accent to-secondary text-background flex items-center justify-center uppercase text-xs font-extrabold shadow-inner">
+                {post.profiles?.email ? post.profiles.email.charAt(0) : '?' }
+              </div>
+              <span className="font-semibold">
+                {post.profiles?.email ? post.profiles.email.split('@')[0] : 'Unknown'}
+              </span>
+            </div>
             <span className="text-xs">
               {new Intl.DateTimeFormat("default", {
                 dateStyle: "medium",
@@ -193,7 +207,7 @@ export default function Feed() {
               }).format(new Date(post.created_at))}
             </span>
           </div>
-          <p className="whitespace-pre-line mb-3 text-foreground">{post.content}</p>
+          <p className="whitespace-pre-line mb-3 text-foreground leading-relaxed">{post.content}</p>
           {post.image_url && (
             // eslint-disable-next-line @next/next/no-img-element
             <img

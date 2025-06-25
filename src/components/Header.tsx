@@ -14,18 +14,14 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full flex justify-between items-center p-4 border-b border-primary bg-white/60 dark:bg-gray-900/60 backdrop-blur sticky top-0 z-50">
+    <header className="w-full flex justify-between items-center p-4 border-b border-primary glass-dark sticky top-0 z-50">
       <Link href="/">
-        <h1 className="text-xl font-bold tracking-tight text-foreground">College Feed</h1>
+        <h1 className="text-xl font-bold tracking-tight text-foreground">CampusVerse</h1>
       </Link>
-      {session ? (
+      {session && (
         <button onClick={signOut} className="text-sm text-primary font-medium underline hover:text-secondary transition-colors">
           Sign Out
         </button>
-      ) : (
-        <Link href="/auth" className="text-sm text-primary font-medium underline hover:text-secondary transition-colors">
-          Sign In
-        </Link>
       )}
     </header>
   );

@@ -10,7 +10,7 @@
   --success: #57CC99;    /* green */
 
   /* Semantic tokens */
-  --background: #ffffff;
+  --background: #fdfbfb;
   --foreground: var(--base);
 }
 
@@ -23,14 +23,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #0e0f1a;
     --foreground: #ededed;
     --base: #ededed;
   }
 }
 
 body {
-  background: linear-gradient(135deg, var(--base) 0%, var(--primary) 25%, var(--secondary) 50%, var(--accent) 75%, var(--success) 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 50%, #16213e 100%);
   color: var(--foreground);
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
@@ -40,5 +40,34 @@ body {
 .gradient-overlay {
   background: linear-gradient(120deg, var(--base), var(--primary), var(--secondary), var(--accent), var(--success));
   background-size: 400% 400%;
+}
+
+/* Liquid Glass Animated Backdrop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(at 20% 30%, rgba(34,87,122,0.6) 0px, transparent 400px),
+    radial-gradient(at 80% 70%, rgba(56,163,165,0.6) 0px, transparent 500px),
+    radial-gradient(at 50% 50%, rgba(41,52,98,0.6) 0px, transparent 600px);
+  opacity: 0.5;
+  filter: blur(120px) saturate(120%);
+  animation: liquidMove 25s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes liquidMove {
+  0% { transform: translateY(-8%) scale(1); }
+  100% { transform: translateY(8%) scale(1.15); }
+}
+
+/* Glassmorphism (dark) utility */
+.glass-dark {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
 }
 
